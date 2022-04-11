@@ -3,6 +3,8 @@ import { useRef } from "react";
 import "./register.css";
 import { useHistory } from "react-router";
 
+//A simple content
+
 export default function Register() {
   const username = useRef();
   const email = useRef();
