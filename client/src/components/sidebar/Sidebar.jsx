@@ -14,6 +14,7 @@ import {
 import CloseFriend from "../closeFriend/CloseFriend";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from 'react-router-dom'
 
 
 export default function Sidebar() {
@@ -44,20 +45,17 @@ export default function Sidebar() {
     console.log(friends);
   }, [friends])
 
-  
-
-
-  return (
+return (
     <div className="sidebar">
       <div className="sidebarWrapper">
         <ul className="sidebarList">
           <li className="sidebarListItem">
             <RssFeed className="sidebarIcon" />
-            <span className="sidebarListItemText">Feed</span>
+            <span className="sidebarListItemText"><Link to={`/`}>Feed</Link></span>
           </li>
           <li className="sidebarListItem">
             <Chat className="sidebarIcon" />
-            <span className="sidebarListItemText">Chats</span>
+            <span className="sidebarListItemText"><Link to={`/messenger`}>Chats</Link></span>
           </li>
           <li className="sidebarListItem">
             <PlayCircleFilledOutlined className="sidebarIcon" />
