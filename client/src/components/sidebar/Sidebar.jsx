@@ -10,10 +10,43 @@ import {
   Event,
   School,
 } from "@material-ui/icons";
-import { Users } from "../../dummyData";
+// import { Users } from "../../dummyData";
 import CloseFriend from "../closeFriend/CloseFriend";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 
 export default function Sidebar() {
+  const [user, setUser] = useState(null);
+  const [friends, setFriends] = useState([]);
+
+
+  const getFriends = async (id)=> {
+    console.log(`/users/friends/${id}`);
+    const friends = await axios.get(`/users/friends/${id}`);
+    // console.log(friends.data);
+    setFriends(friends.data);
+  }
+
+  useEffect(() => {
+    // Retrieve data from local storage when component mounts
+    const storedData = localStorage.getItem('user');
+    if (storedData) {
+      let parseData = JSON.parse(storedData);
+      setUser(JSON.parse(storedData));
+      // console.log("stored Data: ", parseData._id);
+      getFriends(parseData._id);
+    }
+  }, []);
+
+  useEffect(()=>{
+    // getFriendList();
+    console.log(friends);
+  }, [friends])
+
+  
+
+
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
@@ -30,7 +63,7 @@ export default function Sidebar() {
             <PlayCircleFilledOutlined className="sidebarIcon" />
             <span className="sidebarListItemText">Videos</span>
           </li>
-          <li className="sidebarListItem">
+          {/* <li className="sidebarListItem">
             <Group className="sidebarIcon" />
             <span className="sidebarListItemText">Groups</span>
           </li>
@@ -54,12 +87,16 @@ export default function Sidebar() {
             <School className="sidebarIcon" />
             <span className="sidebarListItemText">Courses</span>
           </li>
+  */}
         </ul>
         <button className="sidebarButton">Show More</button>
         <hr className="sidebarHr" />
         <ul className="sidebarFriendList">
-          {Users.map((u) => (
+          {friends.map((u) => (
             <CloseFriend key={u.id} user={u} />
+            // <div>
+            //   {u}
+            // </div>
           ))}
         </ul>
       </div>
