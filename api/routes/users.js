@@ -55,6 +55,22 @@ router.get("/", async (req, res) => {
   }
 });
 
+
+//get all user for searching 
+router.get("/all", async (req, res) => {
+  try {
+    const user = await User.find({}, 'username');
+    // const user = userId
+    //   ? await User.findById(userId)
+    //   : await User.findOne({ username: username });
+    // const { password, updatedAt, ...other } = user._doc;
+    console.log(user);
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 //get friends
 router.get("/friends/:userId", async (req, res) => {
   try {

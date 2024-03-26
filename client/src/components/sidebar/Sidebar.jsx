@@ -23,7 +23,7 @@ export default function Sidebar() {
 
 
   const getFriends = async (id)=> {
-    console.log(`/users/friends/${id}`);
+    // console.log(`/users/friends/${id}`);
     const friends = await axios.get(`/users/friends/${id}`);
     // console.log(friends.data);
     setFriends(friends.data);
@@ -40,10 +40,10 @@ export default function Sidebar() {
     }
   }, []);
 
-  useEffect(()=>{
-    // getFriendList();
-    console.log(friends);
-  }, [friends])
+  // useEffect(()=>{
+  //   // getFriendList();
+  //   console.log(friends);
+  // }, [friends])
 
 return (
     <div className="sidebar">

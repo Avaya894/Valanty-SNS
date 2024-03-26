@@ -1,12 +1,60 @@
 import "./topbar.css";
 import { Search, Person, Chat, Notifications } from "@material-ui/icons";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import axios from "axios";
 
 export default function Topbar() {
   const { user } = useContext(AuthContext);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  // add this state
+  const [apiUsers, setApiUsers] = useState([])
+  const [searchItem, setSearchItem] = useState('')
+  // set the initial state of filteredUsers to an empty array
+  const [filteredUsers, setFilteredUsers] = useState([])
+  // initialize the loading state as true
+  const [loading, setLoading] = useState(true)
+  // initialize the error state as null
+  const [error, setError] = useState(null)
+
+  const getUsers = async () => {
+    try {
+      const userlist = await axios.get(`/users/all`);
+      // console.log("User list: ", userlist.data);
+      setApiUsers(userlist.data);
+      setFilteredUsers(userlist.data);
+      setLoading(false);
+
+    } catch(err) {
+      console.log(err)
+        // update the error state
+      setError(err)
+    }
+}
+
+// fetch the users 
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+
+  const handleInputChange = (e) => { 
+    const searchTerm = e.target.value;
+    setSearchItem(searchTerm)
+
+    // filter the items using the apiUsers state
+    const filteredItems = apiUsers.filter((user) =>
+      user.username.toLowerCase().includes(searchTerm.toLowerCase())
+      // console.log("User name for search: ", user.username)
+    );
+
+    setFilteredUsers(filteredItems);
+
+
+  }
+
+
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
@@ -18,9 +66,27 @@ export default function Topbar() {
         <div className="searchbar">
           <Search className="searchIcon" />
           <input
+            list="searchbar"
+            id="searchbarid"
             placeholder="Search for friend, post or video"
             className="searchInput"
           />
+          <datalist id="searchbar">
+            {/* if the data is loading, show a proper message */}
+          {loading && <option value="Loading...." />}
+          {/* if there's an error, show a proper message */}
+          {error && <option value="There was an error loading the users" />}
+          {/* if it finished loading, render the items */}
+          {!loading && !error && filteredUsers.length === 0
+            ? <option value="No users found" />
+            : 
+            <>
+              {filteredUsers.map(user => <option key={user._id} value={user.username} />)}
+              {/* // <option value="Users found" /> */}
+            </>
+      
+          }
+          </datalist>
         </div>
       </div>
       <div className="topbarRight">
@@ -57,3 +123,4 @@ export default function Topbar() {
     </div>
   );
 }
+
