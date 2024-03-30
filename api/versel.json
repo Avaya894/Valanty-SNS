@@ -1,10 +1,5 @@
 {
     "version": 2,
     "name": "valanty-sns-backend",
-    "builds": [
-       { "src": "index.js", "use": "@vercel/node" }
-    ],
-    "routes": [
-       { "src": "/(.*)", "dest": "/app.js" }
-    ]
+    "rewrites": [{ "source": "/(.*)", "destination": "index.js" }]
  }
