@@ -47,6 +47,11 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
   }
 });
 
+app.use('"/', (req, res)=>{
+  return res.status(200).json({
+    msg: "Status code: 200, working good!"
+  });
+})
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
