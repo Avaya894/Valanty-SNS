@@ -54,7 +54,7 @@ app.use("/api/posts", postRoute);
 app.use("/api/conversations", conversationRoute);
 app.use("/api/messages", messageRoute);
 
-app.get('/', (req, res)=>{
+app.get('/api', (req, res)=>{
   return res.status(200).json({
     msg: "Status code: 200, working good!"
   });
