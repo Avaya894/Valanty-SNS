@@ -6,6 +6,7 @@ import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { logoutCall } from "../../apiCalls";
+import { useHistory } from "react-router-dom";
 
 export default function Topbar() {
   const { user } = useContext(AuthContext);
@@ -35,7 +36,16 @@ export default function Topbar() {
         // update the error state
       setError(err)
     }
-}
+  }
+
+  const history = useHistory(); // Hook to access the browser history
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      // Redirect to search URL with the search value
+      history.push(`/profile/${encodeURIComponent(searchItem)}`);
+    }
+  };
 
 // fetch the users 
   useEffect(() => {
@@ -80,6 +90,9 @@ export default function Topbar() {
           <input
             list="searchbar"
             id="searchbarid"
+            onChange={handleInputChange}
+            onKeyPress={handleKeyPress}
+
             placeholder="Search for friend, post or video"
             className="searchInput"
           />
@@ -117,15 +130,13 @@ export default function Topbar() {
           </div>
           <div className="topbarIconItem">
             <Notifications />
-            <span className="topbarIconBadge">1</span>
+            <span className="topbarIconBadge">16</span>
           </div>
         </div>
         <div className="topbarIconItem">
             <ExitToAppIcon 
               onClick={handleLogoutClick}
             />
-            {/* <Notifications /> */}
-            {/* <span className="topbarIconBadge">1</span> */}
           </div>
         
         <Link to={`/profile/${user.username}`}>
