@@ -1,4 +1,5 @@
-import axios from "axios";
+
+import { Link } from "react-router-dom";import axios from "axios";
 import { useRef } from "react";
 import "./register.css";
 import { useHistory } from "react-router";
@@ -22,6 +23,7 @@ export default function Register() {
         email: email.current.value,
         password: password.current.value,
       };
+      console.log(user)
       try {
         await axios.post("/auth/register", user);
         history.push("/login");
@@ -73,7 +75,9 @@ export default function Register() {
             <button className="loginButton" type="submit">
               Sign Up
             </button>
-            <button className="loginRegisterButton">Log into Account</button>
+            <Link to="/login">
+              <button className="loginRegisterButton">Log into Account</button>
+            </Link>
           </form>
         </div>
       </div>

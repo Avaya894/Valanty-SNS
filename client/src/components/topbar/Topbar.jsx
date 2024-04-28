@@ -1,9 +1,11 @@
 import "./topbar.css";
 import { Search, Person, Chat, Notifications } from "@material-ui/icons";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { Link } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
+import { logoutCall } from "../../apiCalls";
 
 export default function Topbar() {
   const { user } = useContext(AuthContext);
@@ -18,6 +20,8 @@ export default function Topbar() {
   // initialize the error state as null
   const [error, setError] = useState(null)
 
+  const { isFetching, dispatch } = useContext(AuthContext);
+  
   const getUsers = async () => {
     try {
       const userlist = await axios.get(`/users/all`);
@@ -38,6 +42,14 @@ export default function Topbar() {
     getUsers();
   }, []);
 
+
+  const handleLogoutClick = (e) => {
+    e.preventDefault();
+    localStorage.clear();
+    logoutCall(
+      dispatch
+    );
+  };
 
   const handleInputChange = (e) => { 
     const searchTerm = e.target.value;
@@ -108,6 +120,14 @@ export default function Topbar() {
             <span className="topbarIconBadge">1</span>
           </div>
         </div>
+        <div className="topbarIconItem">
+            <ExitToAppIcon 
+              onClick={handleLogoutClick}
+            />
+            {/* <Notifications /> */}
+            {/* <span className="topbarIconBadge">1</span> */}
+          </div>
+        
         <Link to={`/profile/${user.username}`}>
           <img
             src={
