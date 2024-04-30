@@ -20,6 +20,8 @@ export default function Profile() {
     fetchUser();
   }, [username]);
 
+  console.log("Profile Users: ", user)
+
   return (
     <>
       <Topbar />

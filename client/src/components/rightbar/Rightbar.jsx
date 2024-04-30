@@ -15,6 +15,9 @@ export default function Rightbar({ user }) {
     currentUser.followings.includes(user?.id)
   );
 
+  // console.log("currentUser: ", currentUser);
+  console.log("Followed User:", followed)
+
   useEffect(() => {
     const getFriends = async () => {
       try {
